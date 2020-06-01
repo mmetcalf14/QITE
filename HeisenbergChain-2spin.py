@@ -9,27 +9,31 @@ import sys
 #plt2 = fig.add_subplot(212)
 #sys.path.append('/Users/mmetcalf/Dropbox/Quantum Embedding/Codes/QITE/code_v4/')
 
-from hamiltonian      import Heisenberg_LR,Heisenberg_SR,print_Hamiltonian, Hmat, TransverseIsing, single_qubit_field
+from hamiltonian      import Heisenberg_LR,Heisenberg_SR,print_Hamiltonian, Hmat, TransverseIsing, Ising, single_qubit_field
 from mf               import hom_mf_solution,hom_mf_state,hom_mf_energy,mf_solution,mf_state,mf_energy
 from ite              import ITE_FCI
 from qite             import QITE
 from binary_functions import Bas2Int
 from math import ceil, floor, pi
-nspin =  2
+from scipy.linalg import eigh
+nspin =  3
 R     =  0.5
 db    =  0.5
 bmax  =  2.00
 
-#H = Heisenberg_SR(nspin,R)
+#H = Heisenberg_LR(nspin,R)
 J = 1/np.sqrt(2)
-H = TransverseIsing(nspin, R, J, J)
-#H = single_qubit_field(pi/4)
+#H = TransverseIsing(nspin, R, J, J)
+#H = Ising(nspin, R, pi/2)
+H = single_qubit_field(pi/4)
 #print('Hamiltonian\n',H)
-#print_Hamiltonian(H)
+print_Hamiltonian(H)
 
-# Hm = Hmat(H)
+Hm = Hmat(H)
+evl, evc = eigh(Hm)
+print(evl)
 # print()
-# print(Hm)
+# print(np.real(Hm))
 
 # AFM initial guess
 
@@ -43,9 +47,9 @@ psi_0[0] = 1.0
 
 #print(psi_0)
 
-ite_data = ITE_FCI(H,db,bmax,psi0=psi_0)
+#ite_data = ITE_FCI(H,db,bmax,psi0=psi_0)
 #print(ite_data)
-qite_data, Xop = QITE(H,db,bmax,lanczos=False,psi0=psi_0,ncheck=10)
+#ite_data, Xop = QITE(H,db,bmax,lanczos=False,psi0=psi_0,ncheck=10)
 #print(Xop)
 # plt1.scatter(ite_data[:,0],ite_data[:,1], color='xkcd:purple', label='ITE' )
 # plt1.set_ylabel('E', fontsize=14)
