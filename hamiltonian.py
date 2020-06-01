@@ -154,18 +154,12 @@ def Ising(nspin,R,psi):
   H.append((active,h_alpha,imap,gmap))
 
  print_Hamiltonian(H)
-=======
-  print(np.cos(psi))
 
-  # -----
-  imap,gmap = pauli_action(active,nspin)
-  H.append((active,h_alpha,imap,gmap))
->>>>>>> 425b841fb7aeeefea63c0d280af40505978ab1cc
  return H
 
 def TransverseIsing(nspin,R,J,h):
     H = []
-<<<<<<< HEAD
+
     for i in range(nspin):
      j = (i+1)%nspin
      #j = i+1
@@ -195,40 +189,6 @@ def TransverseIsing(nspin,R,J,h):
     Hm = Hmat(H)
     print()
     print_Hamiltonian(H)
-=======
-    i=0
-    j = (i+1)%nspin
-    # -----
-    active = [k for k in range(nspin) if dpbc(i,k,nspin)<R or dpbc(j,k,nspin)<R]
-    active = np.asarray(active)
-    print(active)
-    nact   = len(active)
-    # -----
-    h_alpha = np.zeros(4**nact)
-    ii = np.where(active==i)[0][0]
-    jj = np.where(active==j)[0][0]
-    
-    idx     = [0]*nact
-    idx[ii] = 1
-    #print('idx: ',idx)
-    h_alpha[Bas2Int(idx,4)] = h
-    #h_alpha[Bas2Int(idx,4)] = np.sin(psi)
-    idx     = [0]*nact
-    idx[jj] = 1
-    h_alpha[Bas2Int(idx,4)] = h
-    #h_alpha[Bas2Int(idx,4)] = np.sin(psi)
-    idx     = [0]*nact
-    idx[ii] = 3
-    idx[jj] = 3
-    h_alpha[Bas2Int(idx,4)] = J
-    
-    # -----
-    imap,gmap = pauli_action(active,nspin)
-    H.append((active,h_alpha,imap,gmap))
-    Hm = Hmat(H)
-    print()
-    print(Hm)
->>>>>>> 425b841fb7aeeefea63c0d280af40505978ab1cc
     return H
 
 def MaxCut(graph,R):
