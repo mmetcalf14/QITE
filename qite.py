@@ -83,9 +83,12 @@ def QITE_step(H_,psi_,db,xv,check):
   for m in range(nact):
    Pmu_psi[m,:] = gmp[m,imp[m,:]]*psi_[imp[m,:]]
 
+<<<<<<< HEAD
   ## I think Pmu_psi is meant to be calculated on the quantum computer. THis is done for each time step
   ## It would be interesting to compare the theoretical values with the experimental values.
   ## You would need to create a sub routine to perform this calculation rather than letting it run through.
+=======
+>>>>>>> 425b841fb7aeeefea63c0d280af40505978ab1cc
   t1  = time.time()
  
   # ----- set linear system 
@@ -158,6 +161,7 @@ def Lanczos_QITE(hv,sv,db):
  eps   = np.real(eps)
  return np.min(eps)
 
+<<<<<<< HEAD
 def QITE(H_,db,bmax,lanczos=False,psi0=None,omega=None,ncheck=1):
 
 
@@ -170,6 +174,40 @@ def QITE(H_,db,bmax,lanczos=False,psi0=None,omega=None,ncheck=1):
  Um0   = U[:,m0]
  zeta  = np.exp(-db*(eps-eps[m0]))
  fide  = 1.0
+=======
+def QITE(H_,db,bmax,lanczos=False,psi0=None,omega=None,ncheck=1,davidson=True):
+
+ if(davidson):
+  N     = H_[0][2].shape[1]
+  nbit  = int(np.log2(N))
+  hdiag = np.zeros(N,dtype=complex)
+  for i in range(N):
+   hdiag[i] = Hii(H_,i)
+   print (i,hdiag[i])
+ 
+  precond = lambda x,e, *args: x/(hdiag-e+1e-4)
+ 
+  def hop(c_):
+   return Hpsi(H_,c_)
+ 
+  if(psi0 is None):
+   i0       = np.argmin(hdiag)
+   psi0     = np.zeros(N,dtype=complex)
+   psi0[i0] = 1.0
+ 
+  from pyscf.lib import davidson
+  epsm0,Um0 = davidson(hop,psi0,precond)
+ else:
+  Hm    = Hmat(H_)
+  N     = Hm.shape[0]
+  nbit  = int(np.log2(N))
+  eps,U = SciLA.eigh(Hm)
+  m0    = np.argmin(eps)
+  epsm0 = eps[m0]
+  Um0   = U[:,m0]
+  zeta  = np.exp(-db*(eps-eps[m0]))
+  fide  = 1.0
+>>>>>>> 425b841fb7aeeefea63c0d280af40505978ab1cc
 
  fout = open('QITE.out','w')
  fout.write("FCI gs energy %.6f \n" % epsm0)
