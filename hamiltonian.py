@@ -8,7 +8,6 @@ from   scipy            import linalg as SciLA
 from   tools            import print_state,fidelity,dgr,dpbc,dobc
 from   pauli            import sigma_matrices
 
-# ------------------------------------------------- #
 
 def Hpsi(H_,psi_):
  phi = np.zeros(psi_.shape,dtype=complex)
@@ -58,8 +57,6 @@ def Hii(H_,i):
    smx  = [ sigma_matrices[xi[A[w]],xi[A[w]],sm[w]] for w in range(nact)]
    hii += np.real(h[m]*np.prod(smx))
  return hii
-
-# ------------------------------------------------- #
 
 def Heisenberg_SR(nspin,R):
  H = []
@@ -148,8 +145,6 @@ def Ising(nspin,R,psi):
   idx[ii] = 1
   idx[jj] = 1
   h_alpha[Bas2Int(idx,4)] = np.cos(psi)
-<<<<<<< HEAD
-  # -----
   imap,gmap = pauli_action(active,nspin)
   H.append((active,h_alpha,imap,gmap))
 
@@ -162,14 +157,10 @@ def TransverseIsing(nspin,R,J,h):
 
     for i in range(nspin):
      j = (i+1)%nspin
-     #j = i+1
-     print('ind: ',i,j)
-     # -----
      active = [k for k in range(nspin) if dpbc(i,k,nspin)<R or dpbc(j,k,nspin)<R]
      active = np.asarray(active)
      print(active)
      nact   = len(active)
-     # -----
      h_alpha = np.zeros(4**nact)
      ii = np.where(active==i)[0][0]
      jj = np.where(active==j)[0][0]
@@ -182,8 +173,6 @@ def TransverseIsing(nspin,R,J,h):
      idx[jj] = 3
      if np.abs(i-j) == 1 and j != 0:
       h_alpha[Bas2Int(idx,4)] = J
-
-     # -----
      imap,gmap = pauli_action(active,nspin)
      H.append((active,h_alpha,imap,gmap))
     Hm = Hmat(H)
@@ -196,11 +185,10 @@ def MaxCut(graph,R):
  nbit  = len(VV)
  H     = []
  for (i,j) in EE:
-  # -----
+
   active = [k for k in range(nbit) if dgr(graph,i,k)<R or dgr(graph,j,k)<R]
   active = np.asarray(active)
   nact   = len(active)
-  # -----
   h_alpha = np.zeros(4**nact)
   ii = np.where(active==i)[0][0]
   jj = np.where(active==j)[0][0]
@@ -210,8 +198,6 @@ def MaxCut(graph,R):
   idx[ii] = 3
   idx[jj] = 3
   h_alpha[Bas2Int(idx,4)] =  0.5
-
-  # -----
   imap,gmap = pauli_action(active,nbit)
   H.append((active,h_alpha,imap,gmap))
  return H
